@@ -57,6 +57,7 @@ var Shared = module.exports = {
 		case ">>>":
 		case "v>":
 		case "v8>":
+			// context.channel.send_reply(context.intent, "v8 temporarily disabled, please use js> instead."); return;
 			engine = Sandbox.V8; break;
 		default:
 			engine = Sandbox.SpiderMonkey; break;
@@ -117,7 +118,7 @@ var Shared = module.exports = {
 			}
 
 			if (alias) {
-				var key = this.factoids.alias(factoid, value);
+				var key = this.factoids.alias(factoid, value, context.sender.name);
 				context.channel.send_reply(context.sender,
 					"Learned `"+factoid+"` => `"+key+"`.");
 				return;
@@ -139,7 +140,7 @@ var Shared = module.exports = {
 				if (old === result) {
 					context.channel.send_reply(context.sender, "Nothing changed.");
 				} else {
-					this.factoids.learn(factoid, result, context.sender.name);
+					this.factoids.learn(factoid, result, context.sender.name, value);
 					context.channel.send_reply(context.sender, "Changed `"+factoid+
 						"` to: "+result);
 				}
@@ -154,7 +155,7 @@ var Shared = module.exports = {
 	
 	forget: function(context, text) {
 		try {
-			this.factoids.forget(text);
+			this.factoids.forget(text, context.sender.name);
 			context.channel.send_reply(context.sender, "Forgot '"+text+"'.");
 		} catch(e) {
 			context.channel.send_reply(context.sender, e);
@@ -238,6 +239,10 @@ var Shared = module.exports = {
 			context.client.get_user("ChanServ")
 				.send("TOPIC "+context.channel.name+" "+topic);
 		}
+	},
+
+	reauthenticate: function(context, text) {
+		context.client.authenticate();
 	}
 
 

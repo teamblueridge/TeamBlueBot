@@ -13,6 +13,7 @@ var Sol = require("./lib/sol");
 var Sandbox = require("./lib/sandbox");
 var FactoidServer = require("./lib/factoidserv");
 var FeelingLucky = require("./lib/feelinglucky");
+var CanIUseServer = require("./lib/caniuse");
 
 var Shared = require("./shared");
 var Profile = require("./oftnbot-profile");
@@ -57,6 +58,7 @@ var ΩF_0Bot = function(profile) {
 	this.github_context = null;
 
 	this.twitter = new Twitter(Profile.twitter);
+	this.caniuse_server = new CanIUseServer;
 };
 
 
@@ -65,7 +67,7 @@ util.inherits(ΩF_0Bot, Bot);
 ΩF_0Bot.prototype.init = function() {
 	Bot.prototype.init.call(this);
 
-	this.register_listener(/^((?:sm?|v8?|js?|hs?|>>?|\|)>)([^>].*)+/, Shared.execute_js);
+	this.register_listener(/^((?:sm?|v8?|js?|hs?|>>?|>>>>|\|)>)([^>].*)+/, Shared.execute_js);
 	this.register_listener(/\bhttps?:\/\/\S+/, this.url);
 
 	this.register_command("topic", Shared.topic);
@@ -78,6 +80,17 @@ util.inherits(ΩF_0Bot, Bot);
 	this.register_command("gh", this.gh);
 	this.register_command("projects", this.projects);
 	this.register_command("unicode", this.unicode);
+	this.register_command("caniuse", this.caniuse);
+	this.register_command("ciu", "caniuse");
+	this.register_command("auth", Shared.reauthenticate, {allow_intentions: false});
+
+
+	this.register_command("rand", function(context, text) {
+		var options = text.split(',');
+		context.channel.send_reply (context.sender,
+			options[Math.random() * options.length | 0].trim());
+		}
+	);
 
 	var tempurature = /(?:^|[ \(\[])(-?\d+(?:\.\d+)?)[\s°]*([CF])(?:$|[ .\)\]])/g;
 
@@ -191,7 +204,9 @@ util.inherits(ΩF_0Bot, Bot);
 	this.on('command_not_found', this.find);
 
 	this.on('connect', function(client) {
-		this.github_context = client;
+		// name set from the profile
+		if (client.name === "Freenode")
+			this.github_context = client;
 	});
 
 	this.register_command("quiet", function (context, text) {
@@ -271,19 +286,20 @@ util.inherits(ΩF_0Bot, Bot);
 ΩF_0Bot.prototype.start_github_server = function(port) {
 
 	var users = {
-		"eboyjr": "eboy",
-		"eligrey": "sephr",
+		"eboyjr": "dsamarin",
+		"eligrey": "eligrey",
 		"otter": "otters",
 		"FireyFly": "FireFly",
 		"amcgregor": "GothAlice",
 		"guipn": "guidj0s",
 		"insidious": "Obfuscate",
-		"killdream": "Sorella",
+		"killdream": "sorella",
 		"mathiasbynens": "matjas",
 		"navarr": "Navarr",
 		"nisstyre56": "Nisstyre",
 		"SilverTab": "jeannicolas",
-		"Systemfault": "systemfault"
+		"Systemfault": "systemfault",
+		"imbcmdth": "ImBcmDth"
 	};
 
 	http.createServer(function (request, response) {
@@ -391,7 +407,7 @@ util.inherits(ΩF_0Bot, Bot);
 
 ΩF_0Bot.prototype.projects = function(context, project) {
 
-	var options = { host: "api.github.com" };
+	var options = { host: "api.github.com", headers: {'User-Agent': 'The oftn-bot IRC bot from #oftn on irc.freenode.net'}};
 
 	if (project) {
 		// Output information for specific project.
@@ -463,7 +479,8 @@ util.inherits(ΩF_0Bot, Bot);
 
 	var options = {
 		host: "api.github.com",
-		path: "/users/" + username
+		path: "/users/" + username,
+		headers: {'User-Agent': 'The oftn-bot IRC bot from #oftn on irc.freenode.net'}
 	};
 
 	https.get (options, function(res) {
@@ -497,16 +514,16 @@ util.inherits(ΩF_0Bot, Bot);
 	var username, auth;
 	var twitters = {
 		/* Board */
-		"eboyjr": "eboyjr",
-		"sephr": "sephr",
-		"devyn": "devynci",
-		"inimino": "inimino",
-		"gkatsev": "gkatsev",
-		"cloudhead": "cloudhead",
-		"yrashk": "yrashk",
-		"amcgregor": "GothAlice",
+		"dsamarin": "^DS",
+		"eligrey": "^EG",
+		"devyn": "^DC",
+		"inimino": "^MC",
+		"gkatsev": "^GK",
+		"cloudhead": "^AS",
+		"yrashk": "^YR",
+		"amcgregor": "^AG",
 
-		"FireFly": "FireyFly"
+		"FireFly": "^JH"
 	};
 
 	try {
@@ -520,8 +537,8 @@ util.inherits(ΩF_0Bot, Bot);
 			throw new Error("You are not authorized.");
 		}
 
-		auth = twitters[auth[1]] ? "@" + twitters[auth[1]] : auth[1];
-		text = text + " \u2014" + auth;
+		auth = twitters[auth[1]] ? twitters[auth[1]] : "\u2014" + auth[1];
+		text = text + " " + auth;
 
 		if (text.length > 140) {
 			throw new Error("Status is over 140 characters. Get rid of at least "+(text.length-140)+" characters.");
@@ -529,7 +546,7 @@ util.inherits(ΩF_0Bot, Bot);
 
 		this.twitter.updateStatus(text, function(data) {
 			if (data.id_str) {
-				context.channel.send ("Tweet successful: https://twitter.com/oftn_foundation/status/"+data.id_str);
+				context.channel.send ("Tweet successful: https://twitter.com/oftn_wg/status/"+data.id_str);
 			} else {
 				var json = data.data;
 				data = JSON.parse (json);
@@ -637,11 +654,11 @@ var unilist;
 		}
 
 		if (vid)
-			youtube (vid);
+			youtube (vid, info.hash);
 	}
 
 
-	function youtube (vid) {
+	function youtube (vid, hash) {
 
 		var data = {
 			id: vid,
@@ -680,7 +697,7 @@ var unilist;
 							var title = data.items[i].snippet.title;
 							var duration = seconds_to_duration (parse_iso8601_duration (data.items[i].contentDetails.duration));
 
-							context.channel.send ("\u00031,15You\u00030,5Tube\u000F | " + title + " | \u001F" + duration + "\u000F | https://youtu.be/" + vid, {color: true});
+							context.channel.send ("\u00031,15You\u00030,5Tube\u000F | " + title + " | \u001F" + duration + "\u000F | https://youtu.be/" + vid + (hash ? hash : ""), {color: true});
 						} catch (e) {
 							console.error ("YouTube API parse error");
 							console.error (e);
@@ -741,6 +758,16 @@ var unilist;
 					: "0" + seconds)
 				: "00"
 			);
+	}
+};
+
+
+ΩF_0Bot.prototype.caniuse = function(context, text) {
+	try {
+		var text = this.caniuse_server.search(text);
+		context.channel.send_reply(context.intent, text, {color: true});
+	} catch(e) {
+		context.channel.send_reply(context.sender, e);
 	}
 };
 
