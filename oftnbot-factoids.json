@@ -57,7 +57,7 @@
 		},
 		"help": {
 			"value": "For help using oftn-bot, see <https://github.com/oftn/oftn-bot/wiki/Guide-to-oftn-bot>",
-			"popularity": 25
+			"popularity": 26
 		},
 		"board": {
 			"value": "The ΩF:∅ Foundation Board of Directors: cloudhead, eboyjr, sephr, gkatsev, GothAlice, devyn, inimino, and yrashk",
@@ -176,7 +176,7 @@
 		},
 		"colors": {
 			"value": "Foreground: \u0003000 \u0003011 \u0003022 \u0003033 \u0003044 \u0003055 \u0003066 \u0003077 \u0003088 \u0003099 \u00031010 \u00031111 \u00031212 \u00031313 \u00031414 \u00031515 \u00031616\u000f; Background: \u00031,0  0 \u000f \u0003,1  1 \u000f \u0003,2  2 \u000f \u0003,3  3 \u000f \u0003,4  4 \u000f \u0003,5  5 \u000f \u0003,6  6 \u000f \u0003,7  7 \u000f \u0003,8  8 \u000f \u0003,9  9 \u000f \u0003,10 10 \u000f \u0003,11 11 \u000f \u0003,12 12 \u000f \u0003,13 13 \u000f \u0003,14 14 \u000f \u00031,15 15 \u000f \u00031,16 16 \u000f",
-			"popularity": 22
+			"popularity": 23
 		},
 		"ωf:∅": {
 			"alias": "oftn"
@@ -187,7 +187,7 @@
 		},
 		"rainbow": {
 			"value": "\u00034@@@@@@\u00035@\u00034@@\u00035@@\u00034@\u00035@@@\u00037@\u00035@@\u00037@@\u00035@\u00037@@@\u00038@\u00037@@\u00038@@\u00037@\u00038@@@\u00039@\u00038@@\u00039@@\u00038@\u00039@@@\u00033@\u00039@@\u00033@@\u00039@\u00033@@@\u000310@\u00033@@\u000310@@\u00033@\u000310@@@\u000311@\u000310@@\u000311@@\u000310@\u000311@@@\u000312@\u000311@@\u000312@@\u000311@\u000312@@@\u00032@\u000312@@\u00032@@\u000312@\u00032@@@\u000313@\u00032@@\u000313@@\u00032@\u000313@@@\u00036@\u000313@@\u00036@@\u000313@\u00036@@@@@@",
-			"popularity": 6
+			"popularity": 7
 		},
 		"night": {
 			"value": "At night, the ice weasels come.",
@@ -254,7 +254,7 @@
 		},
 		"google+": {
 			"value": "https://plus.google.com/111688594845627806515",
-			"popularity": 0
+			"popularity": 1
 		},
 		"pet oftn-bot": {
 			"value": "beep boop paws sucks",
@@ -262,13 +262,14 @@
 		},
 		"default topic": {
 			"value": "The ΩF:∅ Foundation - The league of open-source software beaux esprits - http://oftn.org - http://oftn.titanpad.com/ - mumble://talk.oftn.org",
-			"popularity": 1
+			"popularity": 2
 		},
 		"usage": {
 			"alias": "help"
 		},
 		"topic": {
-			"alias": "default topic"
+			"alias": "default topic",
+			"popularity": 1
 		},
 		"logs": {
 			"value": "Some logs of this channel are hosted by eboy at http://eboyjr.oftn.org:8080/files/irclogs/freenode/ in #oftn.log files.",
@@ -300,7 +301,7 @@
 		},
 		"new projects": {
 			"value": "We welcome all new projects to the ΩF:∅ Foundation. To start a new one, tell a board member 1) the name of the project, 2) project description [optional], and 3) which ΩF:∅ members are also going to be working on this project. Also ask about setting up a web page at <http://oftn.org/>.",
-			"popularity": 0
+			"popularity": 1
 		},
 		"designers": {
 			"value": "1) entropy- alex@entropyirc.net [cheesy rounded corners]  2) oksushi #css-lance [professional, busy] 3) jedimind http://pud.ca/ [commercial, probably expensive]",
@@ -313,5 +314,6 @@
 		"webhook": {
 			"alias": "post hook"
 		}
-	}
+	},
+	"delete_log": []
 }
