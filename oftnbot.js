@@ -16,7 +16,7 @@ var FeelingLucky = require("./lib/feelinglucky");
 var CanIUseServer = require("./lib/caniuse");
 
 var Shared = require("./shared");
-var Profile = require("./oftnbot-profile");
+var Profile = require("./teambluebot-profile");
 
 var Twitter = require("twitter");
 
