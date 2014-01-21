@@ -257,5 +257,5 @@ JSBot.prototype.caniuse = function(context, text) {
 	}
 };
 
-var profile = require("./ecmabot-profile.js");
+var profile = require("./teambluebot-profile.js");
 (new JSBot(profile)).init();
