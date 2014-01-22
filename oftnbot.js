@@ -651,7 +651,19 @@ var unilist;
 			vid = info.pathname.slice(1);
 		} else if (info.hostname.indexOf (".youtube.")) {
 			vid = querystring.parse (info.query).v;
-		}
+		} else {
+			var http = require('http');
+			var urlOpts = {host: 'www.nodejs.org', path: '/', port: '80'};
+			var re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g;
+			http.get(urlOpts, function (response) {
+				response.on('data', function (chunk) {
+					var str=chunk.toString();
+					var match = re.exec(str);
+					if (match && match[2]) {
+						console.log(match[2]);
+					}
+				});
+			});
 
 		if (vid)
 			youtube (vid, info.hash);
