@@ -411,7 +411,7 @@ util.inherits(ΩF_0Bot, Bot);
 
 	if (project) {
 		// Output information for specific project.
-		options.path = "/repos/oftn/"+project;
+		options.path = "/repos/teamblueridge/"+project;
 		https.get (options, function(res) {
 			var json = "";
 			res.on ("data", function(data) { json += data; });
@@ -451,7 +451,7 @@ util.inherits(ΩF_0Bot, Bot);
 		});
 	} else {
 		// Output public repositories.
-		options.path = "/orgs/oftn/repos";
+		options.path = "/orgs/oftn/teamblueridge";
 		https.get (options, function(res) {
 			var json = "";
 			res.on ("data", function(data) { json += data; });
