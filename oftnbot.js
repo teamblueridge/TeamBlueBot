@@ -480,7 +480,7 @@ util.inherits(ΩF_0Bot, Bot);
 	var options = {
 		host: "api.github.com",
 		path: "/users/" + username,
-		headers: {'User-Agent': 'The oftn-bot IRC bot from #oftn on irc.freenode.net'}
+		headers: {'User-Agent': 'Team BlueRidge BlueBot'}
 	};
 
 	https.get (options, function(res) {
